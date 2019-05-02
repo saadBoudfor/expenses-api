@@ -19,6 +19,7 @@ public class ExpenseLine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne
     private Product product;
     private Double price;
     @NotNull

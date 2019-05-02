@@ -23,10 +23,17 @@ public class Expense {
     private String[] notes;
     private String billUrl;
     private LocalDateTime date;
+    @OneToMany
+    @OrderColumn(name = "id")
     private Payment[] payment;
     private Long price;
+    @OneToMany
+    @OrderColumn(name = "id")
     private Category[] expenseCategories;
     private String userID;
+    @OneToMany
+    @OrderColumn(name = "id")
     private ExpenseLine[] expenseLines;
+    @ManyToOne
     private Store store;
 }

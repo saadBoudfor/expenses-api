@@ -23,5 +23,7 @@ public class Product {
     private String name;
     @Length(max = 500)
     private String description;
+    @OneToMany
+    @OrderColumn(name = "id")
     private Category[] category;
 }
