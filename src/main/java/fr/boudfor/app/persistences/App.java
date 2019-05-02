@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.PrimitiveIterator;
 
 @Component
 @AllArgsConstructor
@@ -25,31 +24,37 @@ public class App implements CommandLineRunner {
     public void run(String... strings) throws Exception {
 
         String[] categoriesList = new String[]{"Software", "food", "books", "tools"};
+        String[] storeName = new String[]{"auChamps", "leclerc", "monoprix", "macro"};
         double[] pricesList = new double[]{66.6, 89.21, 16.99, 56.33, 77.5, 96.3};
 
         for (int i = MIN; i < MAX; i++) {
-            Category software = this._createSimpleCategory(categoriesList[i % categoriesList.length]);
-            Product product = this._createSimpleProduct(software, i);
-            ExpenseLine expenseLine = this._createSimpleExpenseLine(product, pricesList[i% pricesList.length]);
+            Category category = this._createSimpleCategory(categoriesList[i % categoriesList.length]);
+            Product product = this._createSimpleProduct(category, i);
+            ExpenseLine expenseLine = this._createSimpleExpenseLine(product, pricesList[i % pricesList.length]);
+            Store store = this._createSimpleStore(storeName[i % storeName.length]);
+            this._createSimpleExpense(new ExpenseLine[]{expenseLine}, "ID45" + i + "45", store, category.getName());
         }
+    }
 
-//        Store store = this.storeRepository
-//                .save(Store
-//                        .builder()
-//                        .name("Affinity Designer corporation")
-//                        .webSite("http://www.web-designer.com")
-//                        .build());
-//
-//        this.expenseRepository
-//                .save(Expense
-//                        .builder()
-//                        .name("Achat outil maquettage")
-//                        .date(LocalDateTime.now())
-//                        .store(store)
-//                        .userID("12DL99A")
-//                        .expenseLines(new ExpenseLine[]{expenseLine})
-//                        .build());
+    private Expense _createSimpleExpense(ExpenseLine[] expenseLines, String userID, Store store, String category) {
+        return this.expenseRepository
+                .save(Expense
+                        .builder()
+                        .name("Achat " + category)
+                        .date(LocalDateTime.now())
+                        .store(store)
+                        .userID(userID)
+                        .expenseLines(expenseLines)
+                        .build());
+    }
 
+    private Store _createSimpleStore(String storeName) {
+        return this.storeRepository
+                .save(Store
+                        .builder()
+                        .name(storeName + " corporation")
+                        .webSite("http://www." + storeName + ".com")
+                        .build());
     }
 
     private Product _createSimpleProduct(Category category, int number) {
