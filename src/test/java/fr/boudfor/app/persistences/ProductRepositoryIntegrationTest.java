@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -27,9 +29,9 @@ public class ProductRepositoryIntegrationTest {
         entityManager.flush();
 
         // when
-        Product[] found = productRepository.findByName(product1111.getName());
+        Optional<Product> found = productRepository.findById(product1111.getId());
 
         // then
-        assertThat(found.length != 0).isEqualTo(true);
+        assertThat(found.get().getId().equals(product1111.getId())).isEqualTo(true);
     }
 }
